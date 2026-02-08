@@ -45,3 +45,6 @@ bun.lockb
 *.temp
 .cache/
 spec.md
+
+# Example code (keep local only)
+example/

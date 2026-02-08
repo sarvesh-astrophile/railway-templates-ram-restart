@@ -1,5 +1,5 @@
 # Use the official Bun image
-FROM oven/bun:1.1-alpine
+FROM oven/bun:1.2-alpine
 
 # Set working directory
 WORKDIR /app 
@@ -13,9 +13,7 @@ RUN bun install --frozen-lockfile --production
 # Copy source code
 COPY . .
 
-# Run as non-root user for security
-RUN addgroup -g 1001 -S bun && \
-    adduser -S bun -u 1001
+# Run as non-root user for security (bun user already exists in the image)
 USER bun
 
 # Start the application

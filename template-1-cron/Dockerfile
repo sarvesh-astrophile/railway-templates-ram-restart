@@ -2,7 +2,7 @@
 FROM oven/bun:1.1-alpine
 
 # Set working directory
-WORKDIR /app
+WORKDIR /app 
 
 # Copy package files
 COPY package.json bun.lock ./

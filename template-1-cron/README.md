@@ -40,7 +40,7 @@ bun run dev
 | `RAILWAY_PROJECT_ID` | Yes | Target project ID |
 | `RAILWAY_ENVIRONMENT_NAME` | Yes | Target environment name |
 | `RAILWAY_ENVIRONMENT_ID` | Yes | Target environment ID |
-| `TARGET_SERVICE_NAME` | Yes | Service name to monitor |
+| `TARGET_SERVICE_NAME` | Yes | Service name or ID to monitor |
 | `MAX_RAM_GB` | Conditional | RAM threshold in GB (required with MAX_RAM_CRON_INTERVAL_CHECK) |
 | `MAX_RAM_CRON_INTERVAL_CHECK` | No | Cron pattern for RAM checks (e.g., `*/1 * * * *`) |
 | `CRON_INTERVAL_RESTART` | No | Cron pattern for forced restarts (e.g., `0 4 * * *`) |

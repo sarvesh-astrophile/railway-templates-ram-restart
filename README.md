@@ -18,20 +18,17 @@ These templates replicate and extend the functionality of the original [Railway 
 |----------|-------------|----------|----------------|
 | **[Template 1](./template-1-cron/)** | Cron-only (headless) | Background monitoring, minimal footprint | ~20MB RAM |
 | **[Template 2](./template-2-hybrid/)** | Hybrid (Cron + HTTP API) | Operational visibility, manual controls | ~25MB RAM |
-| **[Template 3](./template-3-webhook/)** | Webhook-driven | Reactive monitoring, event-driven | ~20MB RAM |
 
 ## Quick Comparison
 
-| Feature | Template 1 | Template 2 | Template 3 |
-|---------|------------|------------|------------|
-| HTTP Server | ❌ | ✅ | ✅ |
-| Cron Jobs | ✅ | ✅ | ❌ |
-| Manual Restart | ❌ | ✅ | ❌ |
-| Health Endpoint | ❌ | ✅ | ✅ |
-| Event History | ❌ | Last check only | Last 100 events |
-| API Key Auth | ❌ | ✅ | ❌ |
-| Webhook Receiver | ❌ | ❌ | ✅ |
-| Reactive Alerts | ❌ | ❌ | ✅ |
+| Feature | Template 1 | Template 2 |
+|---------|------------|------------|
+| HTTP Server | ❌ | ✅ |
+| Cron Jobs | ✅ | ✅ |
+| Manual Restart | ❌ | ✅ |
+| Health Endpoint | ❌ | ✅ |
+| Event History | ❌ | Last check only |
+| API Key Auth | ❌ | ✅ |
 
 ## Repository Structure
 
@@ -45,7 +42,6 @@ These templates replicate and extend the functionality of the original [Railway 
 ├── spec.md                        # Detailed technical specification
 ├── template-1-cron/               # Headless cron monitor
 ├── template-2-hybrid/             # Cron + HTTP API
-├── template-3-webhook/            # Webhook-driven monitor
 ├── .gitignore
 └── README.md
 ```
@@ -92,27 +88,7 @@ curl http://localhost:3000/health
 curl -X POST -H "X-API-Key: your-key" http://localhost:3000/trigger
 ```
 
-#### Template 3: Webhook-Driven
-Use when you want:
-- Real-time resource alerts
-- Event audit trail
-- Reactive rather than polling
-
-```bash
-cd template-3-webhook
-bun install
-# Configure .env
-bun run dev
-```
-
-**Configure Webhook:**
-1. Deploy to Railway
-2. Copy service URL
-3. Go to Railway Project → Settings → Webhooks
-4. Add webhook URL: `https://your-service.up.railway.app/webhook`
-5. Select events: `Resource.memory`
-
-## Configuration
+### Configuration
 
 All templates require these environment variables:
 
@@ -132,11 +108,6 @@ All templates require these environment variables:
 
 **Template 2:**
 - `API_KEY` - Optional API key for `/trigger` endpoint
-- `PORT` - HTTP server port (default: 3000)
-
-**Template 3:**
-- `AUTO_RESTART` - Enable auto-restart on alerts (default: true)
-- `WEBHOOK_SECRET` - Optional webhook signature verification
 - `PORT` - HTTP server port (default: 3000)
 
 ## Architecture
@@ -205,14 +176,6 @@ curl https://<service>.up.railway.app/health
 curl https://<service>.up.railway.app/status
 ```
 
-### Template 3
-```bash
-# Health and stats
-curl https://<service>.up.railway.app/health
-
-# Recent events
-curl https://<service>.up.railway.app/events?limit=10
-```
 
 ## Development
 
@@ -264,11 +227,6 @@ bun run dev
 **No Metrics Available**
 - Service may be newly deployed (wait a few minutes)
 - Check service is in the target environment
-
-**Webhook Not Receiving Events (Template 3)**
-- Verify webhook URL is correct in Railway settings
-- Check service is publicly accessible (or use Railway's networking)
-- Ensure correct events are selected (Resource.memory)
 
 ### Debug Mode
 

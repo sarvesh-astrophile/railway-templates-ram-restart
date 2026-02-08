@@ -4,11 +4,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Repository Overview
 
-This repository contains three Railway templates for monitoring service memory usage and automatically restarting services. All templates are built with **Bun** and **TypeScript**.
+This repository contains two Railway templates for monitoring service memory usage and automatically restarting services. All templates are built with **Bun** and **TypeScript**.
 
 - **Template 1** (`template-1-cron/`): Headless cron-based monitor
 - **Template 2** (`template-2-hybrid/`): Cron + HTTP API with Hono
-- **Template 3** (`template-3-webhook/`): Webhook-driven monitor
 
 ## Development Commands
 
@@ -16,7 +15,7 @@ All templates use Bun as the runtime and package manager:
 
 ```bash
 # Navigate to a template directory first
-cd template-1-cron  # or template-2-hybrid, template-3-webhook
+cd template-1-cron  # or template-2-hybrid
 
 # Install dependencies
 bun install
@@ -85,12 +84,6 @@ Validation runs at startup and throws if required variables are missing/invalid.
 - Routes: `/health`, `/status`, `/trigger`
 - Circuit breaker state exposed via `/status`
 
-**Template 3 (Webhook)**:
-- Receives Railway webhooks at `POST /webhook`
-- Event ring buffer stores last 100 events in memory
-- Filters: Only processes `Resource.memory` events for target service
-- Async restart (doesn't wait for completion before responding)
-
 ## File Structure
 
 Each template follows this structure:
@@ -103,21 +96,18 @@ src/
 │   └── constants.ts     # API endpoints, config values
 ├── services/
 │   ├── railway.ts       # GraphQL client (all templates)
-│   ├── metrics.ts       # RAM checking (templates 1, 2)
+│   ├── metrics.ts       # RAM checking (all templates)
 │   ├── restart.ts       # Restart logic
-│   └── cron.ts          # Cron job setup (templates 1, 2)
-├── api/                 # HTTP server (templates 2, 3)
+│   └── cron.ts          # Cron job setup
+├── api/                 # HTTP server (template 2)
 │   ├── server.ts
 │   ├── middleware/
 │   └── routes/
-├── store/               # Template 3 only
-│   └── event-store.ts   # In-memory ring buffer
 ├── utils/
 │   ├── circuit-breaker.ts
 │   └── logger.ts        # Structured console logging
 └── types/
-    ├── index.ts
-    └── webhook.ts       # Template 3 only
+    └── index.ts
 ```
 
 ## Railway Configuration
@@ -136,17 +126,13 @@ Each template includes a `railway.json` with deployment settings:
 }
 ```
 
-## Testing Endpoints (Template 2 & 3)
+## Testing Endpoints (Template 2)
 
 ```bash
 # Template 2
 curl http://localhost:3000/health
 curl http://localhost:3000/status
 curl -X POST -H "X-API-Key: $API_KEY" http://localhost:3000/trigger
-
-# Template 3
-curl http://localhost:3000/health
-curl "http://localhost:3000/events?limit=10"
 ```
 
 ## Common Tasks
@@ -160,7 +146,7 @@ curl "http://localhost:3000/events?limit=10"
 - Update `MAX_RAM_CRON_INTERVAL_CHECK` or `CRON_INTERVAL_RESTART` env vars
 - Uses standard cron syntax (e.g., `*/1 * * * *` for every minute)
 
-**Add HTTP endpoint (Template 2/3)**:
+**Add HTTP endpoint (Template 2)**:
 1. Create route handler in `src/api/routes/`
 2. Register in `src/api/server.ts`
 3. Add middleware if needed in `src/api/middleware/`
@@ -173,12 +159,11 @@ curl "http://localhost:3000/events?limit=10"
 
 - **Bun**: Runtime (>=1.1.0)
 - **gqtx**: Type-safe GraphQL client
-- **hono**: HTTP framework (templates 2, 3)
+- **hono**: HTTP framework (template 2)
 - **zod**: Environment validation
 - **@types/bun**: TypeScript types
 
 ## References
 
 - `spec.md`: Detailed technical specification with code examples
-- `docs/railway-webhooks.md`: Railway webhook documentation
 - `example/railway-ram-restart-main/`: Original Node.js implementation

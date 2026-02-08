@@ -6,7 +6,7 @@ export async function getCurrentRamUsage(): Promise<number> {
   const environments = await getEnvironments();
 
   const targetEnvironment = environments.find(
-    (env: Environment) => env.name === env.RAILWAY_ENVIRONMENT_NAME
+    (e: Environment) => e.name === env.RAILWAY_ENVIRONMENT_NAME
   );
 
   if (!targetEnvironment) {
@@ -17,7 +17,7 @@ export async function getCurrentRamUsage(): Promise<number> {
     const serviceInstance = serviceInstanceEdge.node;
     const service = await getService(serviceInstance.serviceId);
 
-    if (service.name === env.TARGET_SERVICE_NAME) {
+    if (service.name === env.TARGET_SERVICE_NAME || serviceInstance.serviceId === env.TARGET_SERVICE_NAME) {
       const metrics = await getMetrics(
         env.RAILWAY_PROJECT_ID,
         serviceInstance.serviceId,

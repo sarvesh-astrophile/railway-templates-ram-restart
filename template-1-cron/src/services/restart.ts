@@ -6,7 +6,7 @@ export async function restartService(): Promise<{ deploymentId: string }> {
   const environments = await getEnvironments();
 
   const targetEnvironment = environments.find(
-    (env: Environment) => env.name === env.RAILWAY_ENVIRONMENT_NAME
+    (e: Environment) => e.name === env.RAILWAY_ENVIRONMENT_NAME
   );
 
   if (!targetEnvironment) {

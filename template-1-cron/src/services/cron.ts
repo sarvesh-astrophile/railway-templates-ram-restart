@@ -1,3 +1,4 @@
+import cron from 'node-cron';
 import { env } from '../config/env.js';
 import { logger } from '../utils/logger.js';
 import { CircuitBreaker } from '../utils/circuit-breaker.js';
@@ -15,7 +16,7 @@ export function setupCronJobs(circuitBreaker: CircuitBreaker): void {
   if (env.MAX_RAM_CRON_INTERVAL_CHECK) {
     logger.info(`Setting up RAM check cron: ${env.MAX_RAM_CRON_INTERVAL_CHECK}`);
 
-    Bun.cron(env.MAX_RAM_CRON_INTERVAL_CHECK, async () => {
+    cron.schedule(env.MAX_RAM_CRON_INTERVAL_CHECK, async () => {
       logger.info('Checking RAM usage...');
 
       try {
@@ -52,7 +53,7 @@ export function setupCronJobs(circuitBreaker: CircuitBreaker): void {
   if (env.CRON_INTERVAL_RESTART) {
     logger.info(`Setting up forced restart cron: ${env.CRON_INTERVAL_RESTART}`);
 
-    Bun.cron(env.CRON_INTERVAL_RESTART, async () => {
+    cron.schedule(env.CRON_INTERVAL_RESTART, async () => {
       logger.info('Executing scheduled restart...');
 
       try {

@@ -1,10 +1,7 @@
 import { z } from 'zod';
 
 const envSchema = z.object({
-  RAILWAY_API_TOKEN: z.string().min(1).refine(
-    (val) => val.startsWith('railway_'),
-    { message: 'RAILWAY_API_TOKEN must start with "railway_"' }
-  ),
+  RAILWAY_API_TOKEN: z.string().min(1),
   RAILWAY_PROJECT_ID: z.string().min(1),
   RAILWAY_ENVIRONMENT_NAME: z.string().min(1),
   RAILWAY_ENVIRONMENT_ID: z.string().min(1),

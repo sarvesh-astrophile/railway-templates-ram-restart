@@ -110,6 +110,8 @@ All templates require these environment variables:
 - `API_KEY` - Optional API key for `/trigger` endpoint
 - `PORT` - HTTP server port (default: 3000)
 
+For detailed environment variable documentation, see the [Template 1 Environment Variables Guide](template-1-cron/guide.md).
+
 ## Architecture
 
 ### Circuit Breaker Pattern
@@ -139,7 +141,9 @@ HALF_OPEN (test request)
 
 ### Railway Template (Recommended)
 
-Click the Deploy button in each template's README for one-click deployment.
+Click the Deploy button for one-click deployment:
+
+[![Deploy on Railway](https://railway.com/button.svg)](https://railway.com/deploy/Y84D55?referralCode=selfhost&utm_medium=integration&utm_source=template&utm_campaign=generic)
 
 ### Manual Deployment
 

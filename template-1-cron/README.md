@@ -14,7 +14,7 @@ A headless background service that monitors Railway service memory usage and aut
 
 ### Deploy to Railway
 
-[![Deploy on Railway](https://railway.app/button.svg)](https://railway.com/new/template/TEMPLATE_ID)
+[![Deploy on Railway](https://railway.com/button.svg)](https://railway.com/deploy/Y84D55?referralCode=selfhost&utm_medium=integration&utm_source=template&utm_campaign=generic)
 
 ### Manual Setup
 
@@ -33,6 +33,8 @@ bun run dev
 ```
 
 ## Environment Variables
+
+For detailed configuration instructions, see the [Environment Variables Guide](guide.md).
 
 | Variable | Required | Description |
 |----------|----------|-------------|

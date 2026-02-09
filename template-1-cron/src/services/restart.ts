@@ -17,7 +17,7 @@ export async function restartService(): Promise<{ deploymentId: string }> {
     const serviceInstance = serviceInstanceEdge.node;
     const service = await getService(serviceInstance.serviceId);
 
-    if (service.name === env.TARGET_SERVICE_NAME) {
+    if (service.id === env.TARGET_SERVICE_ID) {
       const deployment = service.deployments.edges.find(
         (edge) => edge.node.environmentId === env.RAILWAY_ENVIRONMENT_ID
       );
@@ -31,5 +31,5 @@ export async function restartService(): Promise<{ deploymentId: string }> {
     }
   }
 
-  throw new Error(`Service "${env.TARGET_SERVICE_NAME}" not found in environment`);
+  throw new Error(`Service "${env.TARGET_SERVICE_ID}" not found in environment`);
 }

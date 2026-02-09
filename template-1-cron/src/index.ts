@@ -7,7 +7,7 @@ logger.info('Starting Railway RAM Monitor (Cron-Only)');
 logger.info('Configuration', {
   projectId: env.RAILWAY_PROJECT_ID,
   environmentName: env.RAILWAY_ENVIRONMENT_NAME,
-  targetService: env.TARGET_SERVICE_NAME,
+  targetService: env.TARGET_SERVICE_ID,
   maxRamGB: env.MAX_RAM_GB,
   ramCheckInterval: env.MAX_RAM_CRON_INTERVAL_CHECK,
   forcedRestartInterval: env.CRON_INTERVAL_RESTART,

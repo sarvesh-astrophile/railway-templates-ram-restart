@@ -35,6 +35,7 @@ export interface ServiceInstance {
 }
 
 export interface Service {
+  id: string;
   name: string;
   deployments: DeploymentConnection;
 }

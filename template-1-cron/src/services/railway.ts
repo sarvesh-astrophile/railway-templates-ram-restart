@@ -73,6 +73,7 @@ export async function getService(serviceId: string): Promise<Service> {
   const query = `
     query service($id: String!) {
       service(id: $id) {
+        id
         name
         deployments {
           edges {
@@ -94,7 +95,7 @@ export async function getService(serviceId: string): Promise<Service> {
 export async function getMetrics(
   projectId: string,
   serviceId: string,
-  environmentId: string
+  _environmentId: string
 ): Promise<MetricsResult> {
   const query = `
     query metrics($startDate: DateTime!, $projectId: String!, $serviceId: String! = "", $environmentId: String = "") {
@@ -114,16 +115,21 @@ export async function getMetrics(
     }
   `;
 
-  const startDate = new Date().toISOString();
+  // Query for the last hour to ensure we have data
+  const startDate = new Date(Date.now() - 60 * 60 * 1000).toISOString();
   const result = await client.request<MetricsResponse>(query, {
     projectId,
     serviceId,
-    environmentId,
     startDate,
   });
 
   // Railway returns metrics as an array, extract first element
   const metrics = Array.isArray(result.metrics) ? result.metrics[0] : result.metrics;
+
+  if (!metrics) {
+    throw new Error(`No metrics data returned for service ${serviceId}`);
+  }
+
   return metrics;
 }
 

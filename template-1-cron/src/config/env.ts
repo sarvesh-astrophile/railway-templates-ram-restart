@@ -5,7 +5,7 @@ const envSchema = z.object({
   RAILWAY_PROJECT_ID: z.string().min(1),
   RAILWAY_ENVIRONMENT_NAME: z.string().min(1),
   RAILWAY_ENVIRONMENT_ID: z.string().min(1),
-  TARGET_SERVICE_NAME: z.string().min(1),
+  TARGET_SERVICE_ID: z.string().min(1),
   MAX_RAM_GB: z.coerce.number().positive().optional(),
   MAX_RAM_CRON_INTERVAL_CHECK: z.string().optional(),
   CRON_INTERVAL_RESTART: z.string().optional(),

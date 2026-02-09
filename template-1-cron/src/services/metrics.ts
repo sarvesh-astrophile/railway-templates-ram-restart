@@ -1,4 +1,4 @@
-import { getEnvironments, getService, getMetrics } from './railway.js';
+import { getEnvironments, getMetrics } from './railway.js';
 import { env } from '../config/env.js';
 import type { Environment } from '../types/index.js';
 
@@ -15,9 +15,8 @@ export async function getCurrentRamUsage(): Promise<number> {
 
   for (const serviceInstanceEdge of targetEnvironment.serviceInstances.edges) {
     const serviceInstance = serviceInstanceEdge.node;
-    const service = await getService(serviceInstance.serviceId);
 
-    if (service.name === env.TARGET_SERVICE_NAME || serviceInstance.serviceId === env.TARGET_SERVICE_NAME) {
+    if (serviceInstance.serviceId === env.TARGET_SERVICE_ID) {
       const metrics = await getMetrics(
         env.RAILWAY_PROJECT_ID,
         serviceInstance.serviceId,
@@ -33,5 +32,5 @@ export async function getCurrentRamUsage(): Promise<number> {
     }
   }
 
-  throw new Error(`Service "${env.TARGET_SERVICE_NAME}" not found in environment`);
+  throw new Error(`Service "${env.TARGET_SERVICE_ID}" not found in environment`);
 }
